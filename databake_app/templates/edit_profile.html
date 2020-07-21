@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Main Page</title>
+</head>
+<body>
+    <div class="card">
+
+        <!-- Logo and name header -->
+        <div class="card-header">
+            <div class="col">
+                <a href="/logout" class="float-right">Log Out</a> 
+                <img src ="https://i.ibb.co/c6pzmn5/DataBake.png" alt="DataBake logo" width = "20%">
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2" role="group" aria-label="First group" >
+                    <form action="/homepage" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="The DataBake" class="btn btn-dark" id="header1">
+                    </form>
+                </div>
+                <div class="btn-group mr-2 align-right" role="group" aria-label="Second group" id="right">
+                    <form action="/profile" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="Me" class="btn btn-dark" id="header2">
+                    </form>
+                    <form action="/my_recipes" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="My Recipes" class="btn btn-dark" id="header3">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <br>
+            {% if messages %}
+            <ul class = "messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class = "{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <form action="/update_profile" method="POST">
+                {%csrf_token%}
+                <h4>{{ user.first_name}} {{ user.last_name }}</h4>
+                <p>Title:</p>
+                <input value="{{ profile.title }}" type="text" name="title">
+                <br>
+                <p>Location:</p>
+                <input value="{{ profile.location }}" name="location" type="text">        
+                <br>
+                <p>Bio:</p>
+                <input value="{{ profile.bio }}" name="bio" type="text">
+                <br><br>
+                <input type="submit" value="Update" class="btn btn-primary">
+            </form>
+            <form action="/profile" method="post">
+                {%csrf_token%}
+                <input type="submit" value="Cancel" class="btn btn-danger">
+            </form>
+            <br>
+        </div>
+    </div>
+</body>
+</html>

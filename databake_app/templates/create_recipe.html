@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        form{
+            display:table;
+            width:95%;
+        }
+        p{
+            display: table-row;
+        }
+        label{
+            display: table-cell;
+            vertical-align: top;
+        }
+        input{
+            display: table-cell;
+        }
+        #full{
+            width:100%;
+        }
+    </style>
+        
+    <script>
+        var i = 2;
+        function addIngredient(){
+            i++;
+            document.getElementById("add_ing").innerHTML += i + '<input name="ingredient_quantity"><select name="ingredient_measurement"><option value="gram">Grams</option><option value="milliliter">Milliliters</option><option value="liter">Liters</option></select><input name="ingredient_name">';
+        }
+    </script>
+
+    <title>Create A Trip</title>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Logo and name header -->
+        <div class="card-header">
+            <div class="col">
+                <a href="/logout" class="float-right">Log Out</a> 
+                <img src ="https://i.ibb.co/c6pzmn5/DataBake.png" alt="DataBake logo" width = "20%">
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2" role="group" aria-label="First group" >
+                    <form action="/homepage" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="The DataBake" class="btn btn-dark" id="header1">
+                    </form>
+                </div>
+                <div class="btn-group mr-2 align-right" role="group" aria-label="Second group" id="right">
+                    <form action="/profile" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="Me" class="btn btn-dark" id="header2">
+                    </form>
+                    <form action="/my_recipes" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="My Recipes" class="btn btn-dark" id="header3">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            
+            <div class="col p-4 bg-light m-4 border">
+
+                <!-- Create new recipe form -->
+                {% if messages %}
+                    <ul class = "messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="text-danger" class = "{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <form action="/add_recipe" method="post">
+                    {% csrf_token %}
+                    <br>
+                    <p>
+                        <label for="recipe_title">Recipe Title:</label>
+                        <input name="recipe_title" id="full">
+                    </p>
+                    <br>
+                    <p>
+                        <label for="prep_time">Prep Time:</label>
+                        <!-- Input for time duration? -->
+                        <input type="duration" name="prep_time">
+                    </p>
+                    <br>
+                    <p>
+                        <label for="cook_time">Cook Time:</label>
+                        <input type="duration" name="cook_time">
+                    </p>
+                    <br>
+                    <br>
+                    <p>
+                        <label for="category_name">Category:</label>
+                        <select name="category_name">
+                            <option value="dough">Dough</option>
+                            <option value="cream">Cream</option>
+                            <option value="mousse">Mousse</option>
+                            <option value="glaze">Glaze</option>
+                            <option value="sponge">Sponge</option>
+                            <option value="syrup">Syrup</option>
+                            <option value="confectionary">Confectionary</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </p>
+                    <br>
+                    <p>Ingredients:</p>
+                    <p>
+                        
+                            <input name="ingredient_quantity">
+                            <select name="ingredient_measurement">
+                                <option value="gram">Grams</option>
+                                <option value="milliliter">Milliliters</option>
+                                <option value="liter">Liters</option>
+                                <option value="cup">Cups</option>
+                                <option value="tsp">Teaspoons</option>
+                                <option value="tbsp">Tablespoons</option>
+                                <option value="oz">Ounces</option>
+                                <option value="percent">%</option>
+
+                            </select>
+                            <input name="ingredient_name">
+                        
+                        <button onclick="addIngredient()" id="add_ing">Add Ingredient</button>
+                    </p>
+                    <br>
+                    <p>
+                        <label for="recipe_directions">Directions:</label>
+                        <textarea name="recipe_directions" id="full"></textarea>
+                    </p>
+                    <br>
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </form>
+                <br>
+                <form action="/profile" method="post">
+                    {%csrf_token%}
+                    <input type="submit" value="Cancel" class="btn btn-danger">
+                </form>
+
+            </div> 
+            
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        form{
+            display:table;
+            width:95%;
+        }
+        p{
+            display: table-row;
+        }
+        label{
+            display: table-cell;
+            vertical-align: top;
+        }
+        input{
+            display: table-cell;
+        }
+        #full{
+            width:100%;
+        }
+    </style>
+    <title>Edit</title>
+</head>
+<body>
+    <div class="card">
+        
+        <!-- Logo and name header -->
+        <div class="card-header">
+            <div class="col">
+                <a href="/logout" class="float-right">Log Out</a> 
+                <img src ="https://i.ibb.co/c6pzmn5/DataBake.png" alt="DataBake logo" width = "20%">
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2" role="group" aria-label="First group" >
+                    <form action="/homepage" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="The DataBake" class="btn btn-dark" id="header1">
+                    </form>
+                </div>
+                <div class="btn-group mr-2 align-right" role="group" aria-label="Second group" id="right">
+                    <form action="/profile" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="Me" class="btn btn-dark" id="header2">
+                    </form>
+                    <form action="/my_recipes" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="My Recipes" class="btn btn-dark" id="header3">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit trip with prepopulated info -->
+        <div class="card-body">
+            <div class="col p-4 bg-light m-4 border">
+                <br>
+                {% if messages %}
+                <ul class = "messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class = "{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <form action="/trips/{{ trip.id }}/update" method="POST">
+                    {%csrf_token%}
+                    <p>Destination:</p>
+                    <input value="{{ trip.destination }}" type="text" name="destination">
+                    <br>
+                    <p>Start Date:</p>
+                    <input value={{ start_date }} name="start_date" type="date">        
+                    <br>
+                    <p>End Date:</p>
+                    <input value={{ end_date }} name="end_date" type="date">        
+                    <br>
+                    <p>Plan:</p>
+                    <input value="{{ trip.plan }}" name="plan" type="text">
+                    <br><br>
+                    <input type="submit" value="Update" class="btn btn-primary">
+                </form>
+                <form action="/homepage" method="post">
+                    {%csrf_token%}
+                    <input type="submit" value="Cancel" class="btn btn-danger">
+                </form>
+                <br>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

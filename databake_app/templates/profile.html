@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Main Page</title>
+</head>
+<body>
+    <div class="card">
+
+        <!-- Logo and name header -->
+        <div class="card-header">
+            <div class="col">
+                <a href="/logout" class="float-right">Log Out</a> 
+                <img src ="https://i.ibb.co/c6pzmn5/DataBake.png" alt="DataBake logo" width = "20%">
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2" role="group" aria-label="First group" >
+                    <form action="/homepage" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="The DataBake" class="btn btn-dark" id="header1">
+                    </form>
+                </div>
+                <div class="btn-group mr-2 align-right" role="group" aria-label="Second group" id="right">
+                    <form action="/profile" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="Me" class="btn btn-dark" id="header2">
+                    </form>
+                    <form action="/my_recipes" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="My Recipes" class="btn btn-dark" id="header3">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="card-body">
+            <h1>{{ user.first_name}} {{ user.last_name }}</h1>
+            <a href="/edit_profile" class="float-right">Edit Profile</a> 
+            <p>{{ user.user_profile.title }}</p>
+            <p class="text-muted font-weight-lighter font-italic">{{ user.user_profile.location }}</p>
+            <div class="border">
+                <p class="text-smaller">{{ user.user_profile.bio }}</p>
+            </div>
+            <form action="/create" method="post">
+                {%csrf_token%}
+                <input type="submit" value="Create New Recipe" class="btn btn-secondary" id="header3">
+            </form>
+            <p class="font-weight-bold">Posted Recipes:</p>
+            {% for recipe in all_recipes %}
+                {% if recipe.uploaded_by == user  %}
+                    <div class = "border">
+                        {{ recipe.for_recipe }}
+                        <a href="/recipe/{{ recipe.id }}">{{ recipe.recipe_title }}</a></td>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

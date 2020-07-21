@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #edit_title{
+            width: 60%;
+            height: 4rem;
+            font-size: 30px;
+        }
+        #edit_description{
+            width: 95%;
+            height: auto;
+        }
+    </style>
+    <title>Book Info</title>
+</head>
+<body>
+    <div class="card">
+
+        <!-- Logo and name header -->
+        <div class="card-header">
+            <div class="col">
+                <a href="/logout" class="float-right">Log Out</a> 
+                <img src ="https://i.ibb.co/c6pzmn5/DataBake.png" alt="DataBake logo" width = "20%">
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2" role="group" aria-label="First group" >
+                    <form action="/homepage" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="The DataBake" class="btn btn-dark" id="header1">
+                    </form>
+                </div>
+                <div class="btn-group mr-2 align-right" role="group" aria-label="Second group" id="right">
+                    <form action="/profile" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="Me" class="btn btn-dark" id="header2">
+                    </form>
+                    <form action="/my_recipes" method="post">
+                        {%csrf_token%}
+                        <input type="submit" value="My Recipes" class="btn btn-dark" id="header3">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row card-body">
+            <!-- Recipe info  -->
+            <div class="col p-4 bg-light m-4 border">
+                
+                <h3>{{ recipe.recipe_title }}</h3>
+                <p>Prep time: {{ recipe.prep_time }} </p>
+                <p>Bake time: {{ recipe.cook_time }} </p>
+                <p>Ingredients: {{ recipe.recipe_ingredients.ingredient_name }} </p>
+
+                <p>Created On: {{ recipe.created_at }}</p>
+                <p>Last updated: {{ recipe.updated_at }}</p>
+                <p>Created by: {{ recipe.uploaded_by.first_name }} {{ recipe.uploaded_by.last_name }}</p>
+                <br>
+                <br>                
+                <br>
+                {% if recipe not in user.added_by.all %}
+                    <a href="/recipe/{{ recipe.id }}/add">Add to My Recipes</a>
+                {% else %}
+                    <a href="/recipe/{{ recipe.id }}/remove">Remove from My Recipes</a>
+                {% endif %}
+                <br>
+                <br>
+                <a href="/recipe/{{ recipe.id }}/delete">Delete Recipe</a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
